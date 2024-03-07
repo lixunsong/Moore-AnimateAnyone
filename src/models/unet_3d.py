@@ -13,11 +13,13 @@ from diffusers.configuration_utils import ConfigMixin, register_to_config
 from diffusers.models.attention_processor import AttentionProcessor
 from diffusers.models.embeddings import TimestepEmbedding, Timesteps
 from diffusers.models.modeling_utils import ModelMixin
-from diffusers.utils import SAFETENSORS_WEIGHTS_NAME, WEIGHTS_NAME, BaseOutput, logging
+from diffusers.utils import (SAFETENSORS_WEIGHTS_NAME, WEIGHTS_NAME,
+                             BaseOutput, logging)
 from safetensors.torch import load_file
 
 from .resnet import InflatedConv3d, InflatedGroupNorm
-from .unet_3d_blocks import UNetMidBlock3DCrossAttn, get_down_block, get_up_block
+from .unet_3d_blocks import (UNetMidBlock3DCrossAttn, get_down_block,
+                             get_up_block)
 
 logger = logging.get_logger(__name__)  # pylint: disable=invalid-name
 
@@ -612,24 +614,25 @@ class UNet3DConditionModel(ModelMixin, ConfigMixin):
         unet_config["mid_block_type"] = "UNetMidBlock3DCrossAttn"
 
         model = cls.from_config(unet_config, **unet_additional_kwargs)
-        # load the vanilla weights
-        if pretrained_model_path.joinpath(SAFETENSORS_WEIGHTS_NAME).exists():
-            logger.debug(
-                f"loading safeTensors weights from {pretrained_model_path} ..."
-            )
-            state_dict = load_file(
-                pretrained_model_path.joinpath(SAFETENSORS_WEIGHTS_NAME), device="cpu"
-            )
+        state_dict = OrderedDict()
+        # # load the vanilla weights
+        # if pretrained_model_path.joinpath(SAFETENSORS_WEIGHTS_NAME).exists():
+        #     logger.debug(
+        #         f"loading safeTensors weights from {pretrained_model_path} ..."
+        #     )
+        #     state_dict = load_file(
+        #         pretrained_model_path.joinpath(SAFETENSORS_WEIGHTS_NAME), device="cpu"
+        #     )
 
-        elif pretrained_model_path.joinpath(WEIGHTS_NAME).exists():
-            logger.debug(f"loading weights from {pretrained_model_path} ...")
-            state_dict = torch.load(
-                pretrained_model_path.joinpath(WEIGHTS_NAME),
-                map_location="cpu",
-                weights_only=True,
-            )
-        else:
-            raise FileNotFoundError(f"no weights file found in {pretrained_model_path}")
+        # elif pretrained_model_path.joinpath(WEIGHTS_NAME).exists():
+        #     logger.debug(f"loading weights from {pretrained_model_path} ...")
+        #     state_dict = torch.load(
+        #         pretrained_model_path.joinpath(WEIGHTS_NAME),
+        #         map_location="cpu",
+        #         weights_only=True,
+        #     )
+        # else:
+        #     raise FileNotFoundError(f"no weights file found in {pretrained_model_path}")
 
         # load the motion module weights
         if motion_module_path.exists() and motion_module_path.is_file():
