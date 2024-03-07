@@ -265,6 +265,6 @@ def ui():
 
     return demo
 
-
+download_weights()
 demo = ui()
 demo.launch(share=True)
