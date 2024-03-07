@@ -25,9 +25,9 @@ def download_weights():
     openxlab.login(
         ak="plnzwojxmakz9jzbjn8w", sk="pzmbel7yqk5rqnp6xzl5jbrgb2m9xggvdaw1yjzx"
     )
-    download(model_repo="patrolli/AnimateAnyone", output="pretrained_weights")
+    download(model_repo="patrolli/Moore-AnimateAnyone", output="./pretrained_weights")
     print("Download anyone weights success")
-    download(model_repo="openxlab-app/sd-vae-ft-mse", output="pretrained_weights")
+    download(model_repo="openxlab-app/sd-vae-ft-mse", output="./pretrained_weights")
     print("Download sd-vae-ft-mse weights success")
 
 
