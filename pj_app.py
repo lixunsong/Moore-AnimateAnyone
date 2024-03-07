@@ -27,8 +27,15 @@ def download_weights():
     )
     download(model_repo="patrolli/Moore-AnimateAnyone", output="./pretrained_weights")
     print("Download anyone weights success")
-    download(model_repo="openxlab-app/sd-vae-ft-mse", output="./pretrained_weights")
+    download(
+        model_repo="openxlab-app/sd-vae-ft-mse",
+        output="./pretrained_weights/sd-vae-ft-mse",
+    )
     print("Download sd-vae-ft-mse weights success")
+    download(
+        model_repo="patrolli/sd-image-variation-imgenc",
+        output="./pretrained_weights/image_encoder",
+    )
 
 
 class AnimateController:
@@ -63,17 +70,15 @@ class AnimateController:
                 self.config.pretrained_vae_path,
             ).to("cuda", dtype=self.weight_dtype)
 
-            reference_unet = UNet2DConditionModel.from_pretrained(
-                self.config.pretrained_base_model_path,
-                subfolder="unet",
+            reference_unet = UNet2DConditionModel.from_config(
+                "./pretrained_weights/config.json",
             ).to(dtype=self.weight_dtype, device="cuda")
 
             inference_config_path = self.config.inference_config
             infer_config = OmegaConf.load(inference_config_path)
             denoising_unet = UNet3DConditionModel.from_pretrained_2d(
-                self.config.pretrained_base_model_path,
+                "./pretrained_weights",
                 self.config.motion_module_path,
-                subfolder="unet",
                 unet_additional_kwargs=infer_config.unet_additional_kwargs,
             ).to(dtype=self.weight_dtype, device="cuda")
 
