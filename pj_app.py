@@ -26,6 +26,8 @@ def download_weights():
     download(model_repo='openxlab-app/sd-vae-ft-mse', output='pretrained_weights')
     print('Download sd-vae-ft-mse weights success')
 
+download_weights()
+
 class AnimateController:
     def __init__(
         self,
@@ -265,6 +267,5 @@ def ui():
 
     return demo
 
-download_weights()
 demo = ui()
 demo.launch(share=True)
