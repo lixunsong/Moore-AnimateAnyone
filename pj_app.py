@@ -26,7 +26,6 @@ def download_weights():
     download(model_repo='openxlab-app/sd-vae-ft-mse', output='pretrained_weights')
     print('Download sd-vae-ft-mse weights success')
 
-download_weights()
 
 class AnimateController:
     def __init__(
@@ -38,6 +37,8 @@ class AnimateController:
         self.config = OmegaConf.load(config_path)
         self.pipeline = None
         self.weight_dtype = weight_dtype
+
+        download_weights()
 
     def animate(
         self,
