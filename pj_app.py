@@ -4,10 +4,12 @@ from datetime import datetime
 
 import gradio as gr
 import numpy as np
+import openxlab
 import torch
 from diffusers import AutoencoderKL, DDIMScheduler
 from einops import repeat
 from omegaconf import OmegaConf
+from openxlab.model import download
 from PIL import Image
 from torchvision import transforms
 from transformers import CLIPVisionModelWithProjection
@@ -18,13 +20,15 @@ from src.models.unet_3d import UNet3DConditionModel
 from src.pipelines.pipeline_pose2vid_long import Pose2VideoPipeline
 from src.utils.util import get_fps, read_frames, save_videos_grid
 
-from openxlab.model import download
 
 def download_weights():
-    download(model_repo='patrolli/AnimateAnyone', output='pretrained_weights')
-    print('Download anyone weights success')
-    download(model_repo='openxlab-app/sd-vae-ft-mse', output='pretrained_weights')
-    print('Download sd-vae-ft-mse weights success')
+    openxlab.login(
+        ak="plnzwojxmakz9jzbjn8w", sk="pzmbel7yqk5rqnp6xzl5jbrgb2m9xggvdaw1yjzx"
+    )
+    download(model_repo="patrolli/AnimateAnyone", output="pretrained_weights")
+    print("Download anyone weights success")
+    download(model_repo="openxlab-app/sd-vae-ft-mse", output="pretrained_weights")
+    print("Download sd-vae-ft-mse weights success")
 
 
 class AnimateController:
@@ -267,6 +271,7 @@ def ui():
         )
 
     return demo
+
 
 demo = ui()
 demo.launch(share=True)
