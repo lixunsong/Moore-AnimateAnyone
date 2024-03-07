@@ -22,6 +22,9 @@ from openxlab.model import download
 
 def download_weights():
     download(model_repo='patrolli/AnimateAnyone', output='pretrained_weights')
+    print('Download anyone weights success')
+    download(model_repo='openxlab-app/sd-vae-ft-mse', output='pretrained_weights')
+    print('Download sd-vae-ft-mse weights success')
 
 class AnimateController:
     def __init__(
